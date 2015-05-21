@@ -79,5 +79,8 @@ setup(
     entry_points='''
         [ckan.plugins]
         featuredviews=ckanext.featuredviews.plugin:FeaturedviewsPlugin
+
+        [paste.paster_command]
+        featured=ckanext.featuredviews.commands:FeaturedCommands
     ''',
 )

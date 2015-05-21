@@ -21,5 +21,13 @@
        current_filters=current_filters
     %}
   {% endfor %}
+
+  <div style="float:right; display:inline-block;">
+      <input type="checkbox" name="canonical" value="canonical"/>
+        <span style="margin-left:0.4rem; margin-right:0.4rem">{{_("Canonical View")}}</span>
+
+      <input type="checkbox" name="featured" value="featured"/>
+        <span style="margin-left:0.4rem;">{{_("Show on Home Page")}}</span>
+  </div>
 </ul>
 {% endif %}
