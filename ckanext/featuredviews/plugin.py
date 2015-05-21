@@ -45,6 +45,24 @@ def _get_canonical_view(package_id):
     return {'resource': resource, 'resource_view': resource_view}
 
 def _get_homepage_views():
-    homepage = Featured.find(homepage=True).all()
+    homepage_view_ids = [
+        view.resource_view_id for view in Featured.find(homepage=True).all()
+    ]
 
-    return homepage
+    resource_views = model.Session.query(model.ResourceView).filter(
+        model.ResourceView.id.in_(homepage_view_ids)
+    ).all()
+
+    homepage_views = []
+    for view in resource_views:
+        resource_view = md.resource_view_dictize(view, {'model': model})
+        resource_obj = model.ResourceView.get(view.id, {'model': model})
+        resource = md.resource_dictize(resource)
+
+        homepage_views.append({
+            'resource_view': resource_view,
+            'resource': resource,
+            'package': resource.package
+        })
+
+    return homepage_views
