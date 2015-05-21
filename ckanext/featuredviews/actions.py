@@ -29,8 +29,8 @@ def featured_create(context, data_dict):
 
     featured = db.Featured()
     featured.resource_view_id = data['resource_view_id']
-    featured.canonical = data['canonical']
-    featured.homepage = data['homepage']
+    featured.canonical = data.get('canonical', False)
+    featured.homepage = data.get('homepage', False)
 
     resource_id = model.ResourceView.get(featured.resource_view_id).resource_id
     featured.package_id = model.Package.get(resource_id).package_id
@@ -66,8 +66,12 @@ def featured_upsert(context, data_dict):
         featured = db.Featured()
 
     featured.resource_view_id = data['resource_view_id']
-    featured.canonical = data['canonical']
-    featured.homepage = data['homepage']
+    
+    if data.has_key('canonical'):
+        featured.canonical = data['canonical']
+
+    if data.has_key('homepage'):
+        featured.homepage = data['homepage']
 
     resource_id = model.ResourceView.get(featured.resource_view_id).resource_id
     featured.package_id = model.Resource.get(resource_id).package_id
