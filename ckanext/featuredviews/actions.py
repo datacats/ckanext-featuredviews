@@ -55,7 +55,7 @@ def featured_show(context, data_dict):
 
     return table_dictize(featured, context)
 
-def featured_update(context, data_dict):
+def featured_upsert(context, data_dict):
     data, errors = df.validate(data_dict, schema, context)
 
     if errors:
@@ -63,13 +63,19 @@ def featured_update(context, data_dict):
 
     featured = db.Featured.get(resource_view_id=data['resource_view_id'])
     if featured is None:
-        raise NotFound()
+        featured = db.Featured()
 
+    featured.resource_view_id = data['resource_view_id']
     featured.canonical = data['canonical']
     featured.homepage = data['homepage']
-    featured.package_id = data['package_id']
+
+    resource_id = model.ResourceView.get(featured.resource_view_id).resource_id
+    featured.package_id = model.Resource.get(resource_id).package_id
+
     featured.save()
 
     session = context['session']
     session.add(featured)
     session.commit()
+
+    return featured.resource_view_id

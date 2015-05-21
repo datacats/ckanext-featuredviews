@@ -21,7 +21,7 @@ class FeaturedviewsPlugin(plugins.SingletonPlugin):
         actions_dict = {
             'featured_create': actions.featured_create,
             'featured_show': actions.featured_show,
-            'featured_update': actions.featured_update
+            'featured_upsert': actions.featured_upsert
         }
         return actions_dict
 
