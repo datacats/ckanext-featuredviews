@@ -7,9 +7,8 @@ from ckan.model.meta import metadata,  mapper, Session
 from ckan.model.types import make_uuid
 
 featured_table = Table('featured', metadata,
-    Column('id', types.UnicodeText, primary_key=True, default=make_uuid),
+    Column('resource_view_id', types.UnicodeText, primary_key=True),
     Column('package_id', types.UnicodeText),
-    Column('resource_view_id', types.UnicodeText),
     Column('canonical', types.Boolean),
     Column('homepage', types.Boolean)
 )
