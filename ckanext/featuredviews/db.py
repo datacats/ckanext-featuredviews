@@ -9,8 +9,8 @@ from ckan.model.types import make_uuid
 featured_table = Table('featured', metadata,
     Column('id', types.UnicodeText, primary_key=True, default=make_uuid),
     Column('package_id', types.UnicodeText),
-    Column('resource_id', types.UnicodeText),
-    Column('featured', types.Boolean),
+    Column('resource_view_id', types.UnicodeText),
+    Column('canonical', types.Boolean),
     Column('homepage', types.Boolean)
 )
 
