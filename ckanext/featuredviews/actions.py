@@ -1,5 +1,6 @@
 import db
 import logging
+import ckan.model as model
 
 from ckan.plugins.toolkit import get_validator, ValidationError
 from ckan.lib.dictization import table_dictize
@@ -30,6 +31,10 @@ def featured_create(context, data_dict):
     featured.resource_view_id = data['resource_view_id']
     featured.canonical = data['canonical']
     featured.homepage = data['homepage']
+
+    resource_id = model.ResourceView.get(featured.resource_view_id).resource_id
+    featured.package_id = model.Package.get(resource_id).package_id
+
     featured.save()
 
     session = context['session']
@@ -62,6 +67,7 @@ def featured_update(context, data_dict):
 
     featured.canonical = data['canonical']
     featured.homepage = data['homepage']
+    featured.package_id = data['package_id']
     featured.save()
 
     session = context['session']

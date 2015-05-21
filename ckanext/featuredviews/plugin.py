@@ -2,10 +2,12 @@ import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
 import actions
 
+from db import Featured
 
 class FeaturedviewsPlugin(plugins.SingletonPlugin):
     plugins.implements(plugins.IConfigurer)
     plugins.implements(plugins.IActions, inherit=True)
+    plugins.implements(plugins.ITemplateHelpers, inherit=True)
 
     # IConfigurer
     def update_config(self, config_):
@@ -20,3 +22,20 @@ class FeaturedviewsPlugin(plugins.SingletonPlugin):
             'featured_update': actions.featured_update
         }
         return actions_dict
+
+    def get_helpers(self):
+        helpers = {
+            'get_canonical_resource_view': _get_canonical_view,
+            'get_homepage_resource_views': _get_homepage_views
+        }
+        return helpers
+
+def _get_canonical_view(package_id):
+    canonical = Featured.find(package_id=package_id, canonical=True).first()
+
+    return canonical
+
+def _get_homepage_views():
+    homepage = Featured.find(homepage=True).all()
+
+    return homepage
