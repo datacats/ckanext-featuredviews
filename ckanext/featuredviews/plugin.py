@@ -1,6 +1,8 @@
+import actions
+import ckan.model as model
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
-import actions
+import ckan.lib.dictization.model_dictize as md
 
 from db import Featured
 
@@ -33,7 +35,14 @@ class FeaturedviewsPlugin(plugins.SingletonPlugin):
 def _get_canonical_view(package_id):
     canonical = Featured.find(package_id=package_id, canonical=True).first()
 
-    return canonical
+    resource_view = md.resource_view_dictize(
+        model.ResourceView.get(canonical.resource_view_id), {'model': model}
+    )
+    resource = md.resource_dictize(
+        model.Resource.get(resource_view['resource_id']), {'model': model}
+    )
+
+    return {'resource': resource, 'resource_view': resource_view}
 
 def _get_homepage_views():
     homepage = Featured.find(homepage=True).all()

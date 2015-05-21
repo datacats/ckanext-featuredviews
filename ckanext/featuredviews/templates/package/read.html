@@ -1,6 +1,14 @@
 {% ckan_extends %}
 
 {% block primary_content_inner %}
-    <p> Hello</p>
+
+    {% set view = h.get_canonical_resource_view(pkg.id) %}
+
+    {% snippet 'package/snippets/resource_view.html',
+        resource_view = view['resource_view'],
+        resource = view['resource'],
+        package = pkg
+    %}
+
     {{ super() }}
 {% endblock %}
