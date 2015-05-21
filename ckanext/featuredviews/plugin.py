@@ -56,13 +56,13 @@ def _get_homepage_views():
     homepage_views = []
     for view in resource_views:
         resource_view = md.resource_view_dictize(view, {'model': model})
-        resource_obj = model.ResourceView.get(view.id, {'model': model})
-        resource = md.resource_dictize(resource)
+        resource_obj = model.Resource.get(resource_view['resource_id'])
+        resource = md.resource_dictize(resource_obj, {'model': model})
 
         homepage_views.append({
             'resource_view': resource_view,
             'resource': resource,
-            'package': resource.package
+            'package': md.package_dictize(resource_obj.package, {'model':model})
         })
 
     return homepage_views
