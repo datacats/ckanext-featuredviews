@@ -13,8 +13,8 @@ log = logging.getLogger(__name__)
 schema = {
     'resource_view_id': [get_validator('not_empty'), unicode],
     'package_id': [get_validator('ignore_empty'), unicode],
-    'canonical': [get_validator('ignore_empty'), unicode],
-    'homepage': [get_validator('ignore_empty'), unicode]
+    'canonical': [get_validator('boolean_validator'), unicode],
+    'homepage': [get_validator('boolean_validator'), unicode]
 }
 
 schema_get = {
@@ -41,7 +41,7 @@ def featured_create(context, data_dict):
     session.add(featured)
     session.commit()
 
-    return featured.resource_view_id
+    return table_dictize(featured, context)
 
 def featured_show(context, data_dict):
     data, errors = df.validate(data_dict, schema_get, context)
@@ -66,7 +66,7 @@ def featured_upsert(context, data_dict):
         featured = db.Featured()
 
     featured.resource_view_id = data['resource_view_id']
-    
+
     if data.has_key('canonical'):
         featured.canonical = data['canonical']
 
@@ -82,4 +82,4 @@ def featured_upsert(context, data_dict):
     session.add(featured)
     session.commit()
 
-    return featured.resource_view_id
+    return table_dictize(featured, context)

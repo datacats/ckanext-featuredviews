@@ -35,6 +35,9 @@ class FeaturedviewsPlugin(plugins.SingletonPlugin):
 def _get_canonical_view(package_id):
     canonical = Featured.find(package_id=package_id, canonical=True).first()
 
+    if not canonical:
+        return None
+
     resource_view = md.resource_view_dictize(
         model.ResourceView.get(canonical.resource_view_id), {'model': model}
     )
