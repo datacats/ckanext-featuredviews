@@ -2,6 +2,8 @@
 ckanext-featuredviews
 =============
 
+Display select resource views on dataset and home pages.
+
 By default, CKAN only shows Resource Views on the resource page, but has no
 mechanism for showing users which resources have visualizations, and where the
 good ones are.
