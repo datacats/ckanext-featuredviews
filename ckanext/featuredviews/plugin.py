@@ -5,6 +5,7 @@ import ckan.plugins.toolkit as toolkit
 import ckan.lib.dictization.model_dictize as md
 
 from db import Featured
+from ckan.lib.dictization import table_dictize
 
 class FeaturedviewsPlugin(plugins.SingletonPlugin):
     plugins.implements(plugins.IConfigurer)
@@ -27,10 +28,16 @@ class FeaturedviewsPlugin(plugins.SingletonPlugin):
 
     def get_helpers(self):
         helpers = {
+            'get_featured_view': _get_featured_view,
             'get_canonical_resource_view': _get_canonical_view,
             'get_homepage_resource_views': _get_homepage_views
         }
         return helpers
+
+def _get_featured_view(resource_view_id):
+    featured = Featured.get(resource_view_id=resource_view_id)
+
+    return featured
 
 def _get_canonical_view(package_id):
     canonical = Featured.find(package_id=package_id, canonical=True).first()
