@@ -3,25 +3,37 @@ $(document).ready(function(){
 
     var active_view = $('li.active.view_item:first').data('id')
 
-    $('input:checkbox.canonical').change(function(){
+    $('#canonical').click(function(){
         data = {
             'resource_view_id': active_view,
-            'homepage': $('input:checkbox.homepage')[0].checked,
-            'canonical': this.checked
+            'homepage': $('#homepage').hasClass('active'),
+            'canonical': !$(this).hasClass('active')
         }
         ckanapi.action('featured_upsert', data, function(err, result){
-            console.log(result);
+            if (err == null){
+                if (result['result']['canonical'] === 'True'){
+                    $('#canonical').addClass('active');
+                } else {
+                    $('#canonical').removeClass('active');
+                }
+            }
         })
     });
 
-    $('input:checkbox.homepage').change(function(){
+    $('#homepage').click(function(){
         data = {
             'resource_view_id': active_view,
-            'homepage': this.checked,
-            'canonical': $('input:checkbox.canonical')[0].checked
+            'homepage': !$(this).hasClass('active'),
+            'canonical': $('#canonical').hasClass('active')
         }
         ckanapi.action('featured_upsert', data, function(err, result){
-            console.log(result);
+            if (err == null){
+                if (result['result']['homepage'] === 'True'){
+                    $('#homepage').addClass('active');
+                } else {
+                    $('#homepage').removeClass('active');
+                }
+            }
         })
     });
 });

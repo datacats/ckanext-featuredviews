@@ -25,11 +25,8 @@
   {% if h.check_access('package_update', {'id':pkg.id }) %}
       {% set featured = h.get_featured_view(view_id) %}
       <div style="float:right; display:inline-block;">
-          <input type="checkbox" class="canonical" {{ 'checked' if featured.canonical }} name="canonical" value="featured"/>
-            <span style="margin-left:0.4rem; margin-right:0.4rem">{{_("Canonical View")}}</span>
-
-          <input type="checkbox" class="homepage" {{ 'checked' if featured.homepage }} name="homepage" value="homepage"/>
-            <span style="margin-left:0.4rem;">{{_("Show on Home Page")}}</span>
+          <button id="canonical" type="button" class="btn btn-default {{ 'active' if featured.canonical }}">{{_("Canonical View")}}</button>
+          <button id="homepage" type="button" class="btn btn-warning {{ 'active' if featured.homepage }}">{{_("Show on Home Page")}}</button>
       </div>
   {% endif %}
 </ul>
