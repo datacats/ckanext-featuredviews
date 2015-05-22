@@ -6,6 +6,7 @@ $(document).ready(function(){
     $('input:checkbox.canonical').change(function(){
         data = {
             'resource_view_id': active_view,
+            'homepage': $('input:checkbox.homepage')[0].checked,
             'canonical': this.checked
         }
         ckanapi.action('featured_upsert', data, function(err, result){
@@ -16,7 +17,8 @@ $(document).ready(function(){
     $('input:checkbox.homepage').change(function(){
         data = {
             'resource_view_id': active_view,
-            'homepage': this.checked
+            'homepage': this.checked,
+            'canonical': $('input:checkbox.canonical')[0].checked
         }
         ckanapi.action('featured_upsert', data, function(err, result){
             console.log(result);
