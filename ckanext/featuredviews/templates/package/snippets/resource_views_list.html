@@ -22,6 +22,7 @@
     %}
   {% endfor %}
 
+  {% if h.check_access('package_update', {'id':pkg.id }) %}
   <div style="float:right; display:inline-block;">
       <input type="checkbox" class="canonical" name="canonical" value="featured"/>
         <span style="margin-left:0.4rem; margin-right:0.4rem">{{_("Canonical View")}}</span>
@@ -29,6 +30,7 @@
       <input type="checkbox" class="homepage" name="homepage" value="homepage"/>
         <span style="margin-left:0.4rem;">{{_("Show on Home Page")}}</span>
   </div>
+  {% endif %}
 </ul>
 {% endif %}
 
