@@ -35,6 +35,9 @@ class FeaturedviewsPlugin(plugins.SingletonPlugin):
         return helpers
 
 def _get_featured_view(resource_view_id):
+    if not resource_view_id:
+        return None
+
     featured = Featured.get(resource_view_id=resource_view_id)
 
     return featured

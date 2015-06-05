@@ -22,7 +22,7 @@
     %}
   {% endfor %}
 
-  {% if h.check_access('package_update', {'id':pkg.id }) %}
+  {% if h.check_access('package_update', {'id':pkg.id }) and view_id %}
       {% set featured = h.get_featured_view(view_id) %}
       <div style="float:right; display:inline-block;">
           <button id="canonical" type="button" class="btn btn-default {{ 'active' if featured.canonical }}">{{_("Canonical View")}}</button>
