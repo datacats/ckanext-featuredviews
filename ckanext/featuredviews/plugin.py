@@ -1,16 +1,22 @@
+import db
 import actions
 import ckan.model as model
 import ckan.plugins as plugins
 import ckan.plugins.toolkit as toolkit
 import ckan.lib.dictization.model_dictize as md
 
-from db import Featured
 from ckan.lib.dictization import table_dictize
 
 class FeaturedviewsPlugin(plugins.SingletonPlugin):
     plugins.implements(plugins.IConfigurer)
     plugins.implements(plugins.IActions, inherit=True)
     plugins.implements(plugins.ITemplateHelpers, inherit=True)
+    plugins.implements(plugins.IConfigurable, inherit=True)
+    
+    # IConfigurable
+    def configure(self, config):
+        if not db.featured_table.exists():
+            db.featured_table.create()
 
     # IConfigurer
     def update_config(self, config_):
@@ -38,12 +44,12 @@ def _get_featured_view(resource_view_id):
     if not resource_view_id:
         return None
 
-    featured = Featured.get(resource_view_id=resource_view_id)
+    featured = db.Featured.get(resource_view_id=resource_view_id)
 
     return featured
 
 def _get_canonical_view(package_id):
-    canonical = Featured.find(package_id=package_id, canonical=True).first()
+    canonical = db.Featured.find(package_id=package_id, canonical=True).first()
 
     if not canonical:
         return None
@@ -59,7 +65,7 @@ def _get_canonical_view(package_id):
 
 def _get_homepage_views():
     homepage_view_ids = [
-        view.resource_view_id for view in Featured.find(homepage=True).all()
+        view.resource_view_id for view in db.Featured.find(homepage=True).all()
     ]
 
     resource_views = model.Session.query(model.ResourceView).filter(
