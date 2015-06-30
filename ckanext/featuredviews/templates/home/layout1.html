@@ -12,7 +12,9 @@
               {% for feature in feature_row %}
               <div class="span6">
                   <div class="well">
-                      <h2 style="margin-bottom:0; position: absolute;">{{ h.link_to(h.truncate(feature['package']['name'], 80), h.url_for(controller='package', action='read', id=feature['package']['name'])) }}</h2>
+                      <h2 style="margin-bottom:0; position: absolute;">
+                          {{ h.link_to(h.truncate(feature['package']['title'], 30), h.url_for(controller='package', action='read', id=feature['package']['name'])) }}
+                      </h2>
                       {% snippet 'package/snippets/resource_view.html',
                           resource_view = feature['resource_view'],
                           resource = feature['resource'],
