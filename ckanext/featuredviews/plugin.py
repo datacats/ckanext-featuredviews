@@ -12,10 +12,10 @@ class FeaturedviewsPlugin(plugins.SingletonPlugin):
     plugins.implements(plugins.IActions, inherit=True)
     plugins.implements(plugins.ITemplateHelpers, inherit=True)
     plugins.implements(plugins.IConfigurable, inherit=True)
-    
+
     # IConfigurable
     def configure(self, config):
-        if not db.featured_table.exists():
+        if model.repo.are_tables_created() and not db.featured_table.exists():
             db.featured_table.create()
 
     # IConfigurer
