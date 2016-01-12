@@ -15,7 +15,7 @@ class FeaturedCommands(CkanCommand):
 
     Usage::
 
-        paster featuredviews migrate
+        paster featured migrate
     """
     summary = __doc__.split('\n')[0]
     usage = __doc__
