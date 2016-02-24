@@ -7,6 +7,8 @@ if (isNodeModule) {
     , request = require('request')
     ;
   module.exports = CKAN;
+} else{
+    var _ = jQuery;
 }
 
 (function(my) {
