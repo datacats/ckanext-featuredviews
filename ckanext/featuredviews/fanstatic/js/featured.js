@@ -3,43 +3,24 @@ $(document).ready(function(){
 
     var active_view = $('li.active.view_item:first').data('id');
 
-    $('#canonical').click(function(){
+    $('#canonical, #homepage').click(function(){
         var el = $(this);
-        data = {
+        canonical_or_homepage = el.attr('id');
+        
+        var data = {
             'resource_view_id': active_view,
-            'homepage': $('#homepage').hasClass('active'),
-            'canonical': !$(this).hasClass('active')
-        }
+        };
+        data[canonical_or_homepage] = !el.hasClass('active')
         
         $.ajax({
             method: "POST",
             data: encodeURIComponent(JSON.stringify(data)),
             url: endpoint + 'featured_upsert',
         }).done(function(result){
-            if (result['result']['canonical'] === 'True'){
+            if (result['result'][canonical_or_homepage] === 'True'){
                 el.addClass('active');
             } else {
                 el.removeClass('active');
-            }
-        });
-    });
-
-    $('#homepage').click(function(){
-        data = {
-            'resource_view_id': active_view,
-            'homepage': !$(this).hasClass('active'),
-            'canonical': $('#canonical').hasClass('active')
-        }
-        
-        $.ajax({
-            method: "POST",
-            data: encodeURIComponent(JSON.stringify(data)),
-            url: endpoint + 'featured_upsert',
-        }).done(function(result){
-            if (result['result']['homepage'] === 'True'){
-                $(this).addClass('active');
-            } else {
-                $(this).removeClass('active');
             }
         });
     });
