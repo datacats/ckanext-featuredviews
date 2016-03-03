@@ -53,15 +53,22 @@ def _get_canonical_view(package_id):
 
     if not canonical:
         return None
-
-    resource_view = md.resource_view_dictize(
-        model.ResourceView.get(canonical.resource_view_id), {'model': model}
+    
+    resource_view = model.ResourceView.get(canonical.resource_view_id)
+    if resource_view is None:
+        return None
+    
+    resource_view_dictized = md.resource_view_dictize(
+        resource_view, 
+        {'model': model}
     )
+    
     resource = md.resource_dictize(
-        model.Resource.get(resource_view['resource_id']), {'model': model}
+        model.Resource.get(resource_view_dictized['resource_id']), 
+        {'model': model}
     )
 
-    return {'resource': resource, 'resource_view': resource_view}
+    return {'resource': resource, 'resource_view': resource_view_dictized}
 
 def _get_homepage_views():
     homepage_view_ids = [
@@ -76,6 +83,10 @@ def _get_homepage_views():
     for view in resource_views:
         resource_view = md.resource_view_dictize(view, {'model': model})
         resource_obj = model.Resource.get(resource_view['resource_id'])
+        
+        if resource_obj.state == 'deleted':
+            continue
+        
         resource = md.resource_dictize(resource_obj, {'model': model})
 
         homepage_views.append({
