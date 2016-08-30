@@ -54,14 +54,18 @@ def _get_canonical_view(package_id):
     if not canonical:
         return None
 
-    resource_view = md.resource_view_dictize(
-        model.ResourceView.get(canonical.resource_view_id), {'model': model}
+    resource_view = model.ResourceView.get(canonical.resource_view_id)
+    if not resource_view:
+        return None
+    
+    resource_view_dict = md.resource_view_dictize(
+        resource_view, {'model': model}
     )
     resource = md.resource_dictize(
-        model.Resource.get(resource_view['resource_id']), {'model': model}
+        model.Resource.get(resource_view_dict['resource_id']), {'model': model}
     )
 
-    return {'resource': resource, 'resource_view': resource_view}
+    return {'resource': resource, 'resource_view': resource_view_dict}
 
 def _get_homepage_views():
     homepage_view_ids = [
