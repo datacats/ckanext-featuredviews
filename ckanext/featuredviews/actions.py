@@ -76,9 +76,17 @@ def featured_upsert(context, data_dict):
     resource_id = model.ResourceView.get(featured.resource_view_id).resource_id
     featured.package_id = model.Resource.get(resource_id).package_id
 
+    session = context['session']
+
+    if featured.canonical:
+        canonicals = db.Featured.find(canonical=True, package_id=featured.package_id).all()
+        for canonical in canonicals:
+            if canonical.resource_view_id != featured.resource_view_id:
+                canonical.canonical = False
+                session.add(canonical)
+
     featured.save()
 
-    session = context['session']
     session.add(featured)
     session.commit()
 
